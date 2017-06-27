@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;padding: 0;
+			}
+			body{
+				background: #000;
+			}
+			#c1{
+				background: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="c1" width="800" height="600">
+			<span></span>
+		</canvas>
+	</body>
+</html>
+<script>//随机颜色用
+	function random(n,m){
+		return Math.floor(Math.random()*(m-n)+n);
+	}
+	function d2a(n){//角度转弧度
+		return n*Math.PI/180;
+	}
+	var oC=document.getElementById('c1');
+	var gd=oC.getContext('2d');//生成画笔
+	var arr=[300,500,880,980,200,380,1200,520];//数据
+	
+	var cx=200;//坐标
+	var cy=200;//坐标
+	var r=100;//圆的半径
+	var total=0;//存总数
+	//求总数
+	for(var i=0;i<arr.length;i++){
+		total+=arr[i];
+	}
+	var aDeg=[];//角度
+	//求每个的角度
+	for(var i=0;i<arr.length;i++){
+		aDeg[i]=arr[i]/total*360;
+	}
+	var endDeg=0;//定义起始位置
+	for(var i=0;i<arr.length;i++){
+		gd.beginPath();//开始路径
+		//随机填充颜色
+		gd.fillStyle='rgb('+random(0,256)+','+random(0,256)+','+random(0,256)+')';
+		gd.moveTo(cx,cy);//把笔移到的坐标上
+		//x的坐标，y的坐标，圆的半径，起始位置，结束位置(第一块饼图的起始位置0和结束位置)
+		gd.arc(cx,cy,r,d2a(endDeg),d2a(endDeg+aDeg[i]),false);
+		gd.fill();//填充
+		endDeg+=aDeg[i];//endDeg=endDeg+aDeg[i];继续循环第二第三..块饼图的结束位置
+//	    0            aDeg[0]            endDeg=aDeg[0] 把第一块饼图的角度赋值给endDeg，然后循环下一块饼图
+//1   endDeg[0]->    endDeg+aDeg[1]->   endDeg=endDeg[0]+aDeg[1]第二块饼图的角度再赋值给endDeg，现在的endDeg是两块饼图的角度
+//2   endDeg[1]->    endDeg+aDeg[2]->   endDeg=endDeg[1]+aDeg[2]第三块饼图的角度再赋值给endDeg，现在的endDeg是三块饼图的角度
+//3   endDeg[2]->    endDeg+aDeg[3]->	endDeg=endDeg[2]+aDeg[3]第四块饼图的角度再赋值给endDeg，现在的endDeg是四块饼图的角度
+//n   endDeg->[n]     endDeg+aDeg[n]->   endDeg=endDeg+aDeg[n]第n块饼图
+	}
+</script>
